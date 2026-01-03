@@ -1,0 +1,24 @@
+{
+	"name": "kaster/cms",
+	"description": "",
+	"type": "library",
+	"version": "1.0",
+	"license": "proprietary",
+	"require": {},
+	"autoload": {
+		"psr-4": {
+			"Kaster\\Cms\\": "src/",
+			"Kaster\\Cms\\Tests\\": "tests/",
+			"Kaster\\Cms\\Database\\Factories\\": "database/factories/",
+			"Kaster\\Cms\\Database\\Seeders\\": "database/seeders/"
+		}
+	},
+	"minimum-stability": "stable",
+	"extra": {
+		"laravel": {
+			"providers": [
+				"Kaster\\Cms\\Providers\\CmsServiceProvider"
+			]
+		}
+	}
+}
