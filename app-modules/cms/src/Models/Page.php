@@ -2,6 +2,9 @@
 
 namespace Kaster\Cms\Models;
 
+use Illuminate\Database\Eloquent\Casts\ArrayObject;
+use Illuminate\Database\Eloquent\Casts\AsArrayObject;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Kaster\Cms\Database\Factories\PageFactory;
@@ -14,36 +17,30 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 /**
  * @property int $id
  * @property string $title
  * @property string $slug
- * @property array<int, array<mixed>> $content
+ * @property string $lang
+ * @property string $status
+ * @property ArrayObject $content
  * @property string|null $searchable_content
- * @property PageStatus $status
- * @property string|null $lang
+ * @property ArrayObject|null $seo_metadata
  * @property bool $is_landing
  * @property string $theme
- * @property int|null $parent_page_id
- * @property int|null $translation_origin_model_id
- * @property bool $disable_indexation
- * @property string|null $meta_title
- * @property string|null $meta_description
- * @property string|null $meta_keywords
- * @property string|null $opengraph_title
- * @property string|null $opengraph_description
- * @property int|null $opengraph_picture
- * @property string|null $opengraph_picture_alt
- * @property bool $deletable
+ * @property int|null $parent_id
+ * @property int|null $translation_origin_id
  * @property Carbon|null $published_at
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
- * @property-read Page|null $parent
- * @property-read Page $translationOriginModel
- * @property-read Page $translationOrigin
+ * * @property-read Page|null $parent
+ * @property-read Page|null $translationOrigin
  * @property-read Collection<int, Page> $translations
+ * @property-read string $meta_title_resolved
+ * @property-read Media|null $og_image_resolved
  */
 class Page extends Model implements HasMedia
 {
@@ -59,12 +56,36 @@ class Page extends Model implements HasMedia
 
     protected $casts = [
         'published_at' => 'datetime',
-        'content' => 'array',
-        'status' => PageStatus::class,
-        'disable_indexation' => 'boolean',
         'is_landing' => 'boolean',
+        'content' => AsArrayObject::class,
+        'seo_metadata' => AsArrayObject::class,
+        'status' => PageStatus::class,
         'theme' => PageTheme::class,
     ];
+
+    protected static function booted(): void
+    {
+        static::saving(static function (Page $page) {
+            if ($page->isDirty('content')) {
+                $page->searchable_content = $page->generateSearchableText();
+            }
+
+            $page->lang = $page->lang ?? 'pt_BR';
+        });
+    }
+
+    protected function generateSearchableText(): string
+    {
+        if (empty($this->content)) {
+            return '';
+        }
+
+        $rawText = json_encode($this->content);
+
+        $cleanText = str_replace(['"', '{', '}', '[', ']', 'type:', 'data:'], ' ', $rawText);
+
+        return strip_tags($cleanText);
+    }
 
     public function parent(): BelongsTo
     {
@@ -84,6 +105,28 @@ class Page extends Model implements HasMedia
     public function translationForLang(string $locale): Page
     {
         return $this->translations->where('lang', $locale)->firstOrFail();
+    }
+
+    protected function metaTitleResolved(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->seo_metadata['meta_title'] ?? $this->title
+        );
+    }
+
+    protected function ogImageResolved(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                $mediaId = $this->seo_metadata['og_image_id'] ?? null;
+
+                if (!$mediaId) {
+                    return null;
+                }
+
+                return Media::find($mediaId);
+            }
+        );
     }
 
     public function fullUrlPath(): string
