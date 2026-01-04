@@ -107,13 +107,6 @@ class Page extends Model implements HasMedia
         return $this->translations->where('lang', $locale)->firstOrFail();
     }
 
-    protected function metaTitleResolved(): Attribute
-    {
-        return Attribute::make(
-            get: fn () => $this->seo_metadata['meta_title'] ?? $this->title
-        );
-    }
-
     protected function ogImageResolved(): Attribute
     {
         return Attribute::make(
