@@ -27,6 +27,7 @@ class Menu extends Model
         'title',
         'slug',
         'lang',
+        'translation_origin_id',
     ];
 
     public function items(): HasMany
