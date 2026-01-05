@@ -91,11 +91,10 @@ class PageResource extends Resource
                             ]),
                         $filamentComponentService->getFlexibleContentFieldsForModel(Page::class),
                     ]),
-                View::make('filament.components.preview-json') // Preview
+                View::make('cms::filament.preview-json') // Preview
                     ->columnSpanFull()
                     ->visible(fn ($livewire): bool => $livewire->isJsonVisible)
                     ->reactive(),
-
             ]),
         ];
 
