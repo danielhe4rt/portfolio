@@ -65,13 +65,13 @@ class Page extends Model implements HasMedia
 
     protected static function booted(): void
     {
-        static::saving(static function (Page $page) {
-            if ($page->isDirty('content')) {
-                $page->searchable_content = $page->generateSearchableText();
-            }
-
-            $page->lang = $page->lang ?? 'pt_BR';
-        });
+//        static::saving(static function (Page $page) {
+//            if ($page->isDirty('content')) {
+//                $page->searchable_content = $page->generateSearchableText();
+//            }
+//
+//            $page->lang = $page->lang ?? 'pt_BR';
+//        });
     }
 
     protected function generateSearchableText(): string
