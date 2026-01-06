@@ -74,5 +74,5 @@ return [
      | You can create your own components by implementing the AbstractCustomComponent.
      |--------------------------------------------------------------------------
      */
-    'components' => CustomComponent::allComponents(),
+    'components' => \Kaster\Cms\Enums\CustomComponent::allComponents(),
 ];

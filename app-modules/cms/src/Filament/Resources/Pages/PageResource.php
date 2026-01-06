@@ -44,15 +44,15 @@ class PageResource extends Resource
 
     protected static ?string $label = null;
 
-    public static function getLabel(): ?string
-    {
-        return __('filament.page');
-    }
-
-    public static function getNavigationGroup(): ?string
-    {
-        return __('filament.pages');
-    }
+//    public static function getLabel(): ?string
+//    {
+//        return __('filament.page');
+//    }
+//
+//    public static function getNavigationGroup(): ?string
+//    {
+//        return __('filament.pages');
+//    }
 
     public static function form(Schema $schema): Schema
     {
@@ -68,10 +68,9 @@ class PageResource extends Resource
                             ->columns(2)
                             ->schema([
                                 'title' => TextInput::make('title')
-                                    ->label(__('filament.page_title'))
+                                    ->label(__('Page title'))
                                     ->live(debounce: 400)
                                     ->afterStateUpdated(function (string $operation, string $state, Set $set): void {
-
                                         $set('slug', Str::slug($state));
                                         $set('meta_title', $state);
                                         $set('opengraph_title', $state);
@@ -80,7 +79,7 @@ class PageResource extends Resource
                                     ->required(),
 
                                 'slug' => TextInput::make('slug')
-                                    ->label(__('filament.slug'))
+                                    ->label(__('Slug'))
                                     ->live(debounce: 400)
                                     ->afterStateUpdated(
                                         fn (string $operation, string $state, Set $set): mixed => $operation === 'create'
@@ -99,7 +98,7 @@ class PageResource extends Resource
 
         $parametersTab = [
             'is_landing' => Select::make('is_landing')
-                ->label(__('filament.is_landing_page'))
+                ->label(__('Is Landing?'))
                 ->helperText(__('Used to marketing campaigns'))
                 ->boolean()
                 ->default(false),
@@ -109,7 +108,7 @@ class PageResource extends Resource
                 ->boolean()
                 ->default(true),
             'parent_page_id' => Select::make('parent_page_id')
-                ->label(__('filament.parent_page'))
+                ->label(__('Parent Page'))
                 ->placeholder(__('Select a parent page'))
                 // @phpstan-ignore-next-line
                 ->options(fn (?Model $record): Collection => Page::query()->get()->pluck('title', 'id'))
@@ -125,7 +124,7 @@ class PageResource extends Resource
                 ->options(PageTheme::class)
                 ->default(PageTheme::Default),
             'published_at' => DatePicker::make('published_at')
-                ->label(__('filament.published_at'))
+                ->label(__('Published At'))
                 ->native(false)
                 ->default(now())
                 ->required(),
@@ -134,9 +133,16 @@ class PageResource extends Resource
         $result = [
             'tabs' => Tabs::make('Tabs')
                 ->tabs([
-                    'content' => Tab::make(__('Content'))->label(__('filament.page_content'))->schema($contentTab),
-                    'parameters' => Tab::make(__('Parameters'))->label(__('filament.page_parameters'))->schema($parametersTab)->columns(2),
-                    'seo' => Tab::make(__('SEO'))->schema(CommonFields::getCommonSeoFields())->columns(2),
+                    'content' => Tab::make(__('Content'))
+                        ->label(__('Content'))
+                        ->schema($contentTab),
+                    'parameters' => Tab::make(__('Parameters'))
+                        ->label(__('Parameters'))
+                        ->schema($parametersTab)
+                        ->columns(),
+                    'seo' => Tab::make(__('SEO'))
+                        ->schema(CommonFields::getCommonSeoFields())
+                        ->columns(),
                 ])
                 ->activeTab(1)
                 ->columnSpanFull(),
