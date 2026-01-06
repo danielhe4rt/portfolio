@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('lang', 10)->default('en')->index();
             $table->string('status')->default('draft')->index();
             $table->json('content');
-            $table->longText('searchable_content')->nullable()->fullText();
+            $table->longText('searchable_content')->nullable();
             $table->string('theme')->default('default');
             $table->boolean('is_landing')->default(false);
 

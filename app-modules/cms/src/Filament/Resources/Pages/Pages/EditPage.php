@@ -1,6 +1,6 @@
 <?php
 
-namespace Kaster\Cms\Filament\Resources\CMS\Pages\Pages;
+namespace Kaster\Cms\Filament\Resources\Pages\Pages;
 
 use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;

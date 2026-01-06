@@ -1,6 +1,6 @@
 <?php
 
-namespace seeders;
+namespace Kaster\Cms\Database\Seeders;
 
 use Illuminate\Database\Seeder;
 

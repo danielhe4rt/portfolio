@@ -27,10 +27,10 @@ use Kaster\Cms\Enums\PageStatus;
 use Kaster\Cms\Enums\PageTheme;
 use Kaster\Cms\Filament\CommonFields;
 use Kaster\Cms\Filament\Components\FilamentComponentsService;
-use Kaster\Cms\Filament\Resources\CMS\Pages\Pages\CreatePage;
-use Kaster\Cms\Filament\Resources\CMS\Pages\Pages\EditPage;
-use Kaster\Cms\Filament\Resources\CMS\Pages\Pages\ListPages;
-use Kaster\Cms\Filament\Resources\CMS\Pages\Pages\ViewPage;
+use Kaster\Cms\Filament\Resources\Pages\Pages\CreatePage;
+use Kaster\Cms\Filament\Resources\Pages\Pages\EditPage;
+use Kaster\Cms\Filament\Resources\Pages\Pages\ListPages;
+use Kaster\Cms\Filament\Resources\Pages\Pages\ViewPage;
 use Kaster\Cms\Models\Page;
 
 class PageResource extends Resource
@@ -41,7 +41,6 @@ class PageResource extends Resource
 
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-document-text';
 
-    protected static string|\UnitEnum|null $navigationGroup = null; // 'Pages';
 
     protected static ?string $label = null;
 

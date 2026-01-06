@@ -1,6 +1,6 @@
 <?php
 
-namespace Kaster\Cms\Filament\Resources\CMS\Pages\Pages;
+namespace Kaster\Cms\Filament\Resources\Pages\Pages;
 
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
