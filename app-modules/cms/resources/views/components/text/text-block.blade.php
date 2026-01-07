@@ -1,0 +1,7 @@
+@props([
+    'text'
+])
+
+<div>
+    {{ $text }}
+</div>
