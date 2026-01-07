@@ -25,22 +25,19 @@
         <meta property="og:image:alt" content="{{ $page->title }}"/>
     </x-slot:metatags>
 
-{{--    <x-slot:navbar>--}}
-{{--        <x-navbar :bg="$theme->getPageBackground()"/>--}}
-{{--    </x-slot:navbar>--}}
+    {{--    <x-slot:navbar>--}}
+    {{--        <x-navbar :bg="$theme->getPageBackground()"/>--}}
+    {{--    </x-slot:navbar>--}}
 
     <div class="{{ $theme->getPageBackground() }}">
         @foreach($page->content as $block)
             <div class="pb-32">
-                <x-dynamic-component
-                    :component="'cms::blocks.' . $block['type']"
-                    :data="$block['data']"
-                />
+                <x-cms::components-renderer :block="$block" />
             </div>
         @endforeach
     </div>
 
-{{--    <x-slot:footer>--}}
-{{--        <x-layout.shared.footer :bg="$theme->getPageBackground()"/>--}}
-{{--    </x-slot:footer>--}}
+    {{--    <x-slot:footer>--}}
+    {{--        <x-layout.shared.footer :bg="$theme->getPageBackground()"/>--}}
+    {{--    </x-slot:footer>--}}
 </x-cms::layout.guest>
