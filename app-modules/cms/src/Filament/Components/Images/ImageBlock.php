@@ -1,38 +1,38 @@
 <?php
 
-namespace Kaster\Cms\Filament\Components\Heroes;
+namespace Kaster\Cms\Filament\Components\Images;
 
-use Filament\Forms\Components\TextInput;
-use Kaster\Cms\Enums\CustomComponent;
+use Filament\Forms\Components\FileUpload;
 use Kaster\Cms\Filament\Components\AbstractCustomComponent;
 
-class HeroBlock extends AbstractCustomComponent
+class ImageBlock extends AbstractCustomComponent
 {
-    protected static string $view = 'cms::components.heroes.hero-block';
+    protected static string $view = 'cms::components.images.image-block';
 
     public static function blockSchema(): array
     {
         return [
-            TextInput::make('title'),
-            TextInput::make('subtitle'),
+            FileUpload::make('image')
+                ->label('Image')
+                ->image()
+                ->required(),
         ];
     }
 
     public static function fieldName(): string
     {
-        return CustomComponent::HERO->value;
+        return 'image-block';
     }
 
     public static function getGroup(): string
     {
-        return 'Hero';
+        return 'Media';
     }
 
     public static function setupRenderPayload(array $data): array
     {
         return [
-            'title' => $data['title'],
-            'subtitle' => $data['subtitle'],
+            'image' => $data['image'],
         ];
     }
 
@@ -43,6 +43,6 @@ class HeroBlock extends AbstractCustomComponent
 
     public static function featuredColor(): string
     {
-        return 'orange';
+        return 'blue';
     }
 }

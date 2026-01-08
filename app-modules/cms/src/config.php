@@ -65,14 +65,4 @@ return [
      |--------------------------------------------------------------------------
      */
     'disable_robots_follow' => env('DISABLE_ROBOTS_FOLLOW', false),
-
-    /*
-     |--------------------------------------------------------------------------
-     | Components
-     |--------------------------------------------------------------------------
-     | Components are reusable blocks that can be used in pages or posts.
-     | You can create your own components by implementing the AbstractCustomComponent.
-     |--------------------------------------------------------------------------
-     */
-    'components' => \Kaster\Cms\Enums\CustomComponent::allComponents(),
 ];

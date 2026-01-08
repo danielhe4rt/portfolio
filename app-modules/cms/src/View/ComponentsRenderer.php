@@ -4,25 +4,24 @@ namespace Kaster\Cms\View;
 
 use Illuminate\View\Component;
 use Illuminate\View\View;
-use Kaster\Cms\Enums\CustomComponent;
+use Kaster\Cms\Services\ComponentRegistry;
 
 class ComponentsRenderer extends Component
 {
     public function __construct(
         public array $block
-    ) {}
+    ) {
+    }
 
     public function render(): View|string
     {
         $type = $this->block['type'] ?? null;
 
-        $componentEnum = CustomComponent::tryFrom($type);
+        $componentClass = app(ComponentRegistry::class)->get($type);
 
-        if (! $componentEnum) {
+        if (!$componentClass) {
             return '';
         }
-
-        $componentClass = $componentEnum->getComponent();
 
         $viewName = $componentClass::getView();
 

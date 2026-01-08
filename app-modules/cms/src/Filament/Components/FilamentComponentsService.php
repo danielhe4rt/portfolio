@@ -13,25 +13,17 @@ class FilamentComponentsService
     {
         $blocks = [];
 
-        $componentsConfig = config('cms.components');
-//        Assert::isArray($componentsConfig);
+        $registry = app(\Kaster\Cms\Services\ComponentRegistry::class);
 
-        foreach ($componentsConfig as $component) {
+        foreach ($registry->all() as $componentClass) {
             /** @var ComponentContract $componentClass */
-            $componentClass = $component['class'];
-
-            if (
-                isset($component['disabled_for']) &&
-                is_array($component['disabled_for']) &&
-                in_array($modelClassName, $component['disabled_for'], true)
-            ) {
-                continue;
-            }
+            // logic for disabled_for is removed as it was not present in the Enum implementation
+            // If needed, it should be added to ComponentContract
 
             $name = sprintf('[%s] %s', $componentClass::getGroup(), str($componentClass::fieldName())->title()->replace('-', ' '));
             $blocks[] =
                 Block::make($componentClass::fieldName())
-                    ->label(fn (): HtmlString => new HtmlString(sprintf('<span style="display: inline-block; width: 1rem; height: 1rem; background-color: %s; margin-right: 0.5rem; vertical-align: middle;"></span>%s', $componentClass::featuredColor(), $name)))
+                    ->label(fn(): HtmlString => new HtmlString(sprintf('<span style="display: inline-block; width: 1rem; height: 1rem; background-color: %s; margin-right: 0.5rem; vertical-align: middle;"></span>%s', $componentClass::featuredColor(), $name)))
                     ->schema($componentClass::blockSchema());
         }
 
